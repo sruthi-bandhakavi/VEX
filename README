@@ -1,0 +1,57 @@
+Dependencies:
+ VEX uses the ANTLR parser generator to generate the 
+parser for JavaScript. The jar files should be in the path during 
+compilation and execution of VEX source. ANTLR can be downloaded from 
+the following website: http://www.antlr.org/download/antlr-3.3-complete.jar
+
+Directory Structure:
+
+ - javascriptAnalysis	
+   - antlr  
+     - ES3.g : JavaScript grammar used to generate the lexer and parser
+   - javascript_files  
+     - global.js : 
+       	JavaScript global object summary, summaries of the Firefox Component API
+	and DOM API
+   - junit_tests  
+        Some simple JUnit tests
+   - parser  
+     - ES3.tokens  
+     - ES3Lexer.java : JavaScript lexer
+     - ES3Parser.java : JavaScript parser
+     - ProgramAnalyzerC.java : the analyser
+   - util : support functions for the ProgramAnalyzer
+ 
+Compiling: 
+javac -cp <ANTLR_HOME>/lib/stringtemplate-3.2.jar:<ANTLR_HOME>/lib/antlr-3.1.2-runtime.jar: <ANTLR_HOME>/lib/antlr-3.1.2.jar:. -d <PATH_FOR_BINARIES> javascriptAnalysis/util/*.java javascriptAnalysis/parser/*.java
+
+Command Line Options for Execution: The tool can be customized using several command 
+line options explained below
+
+NUM_VUL : -1 (Examine all paths of the file) 
+	  | n (Stop after finding n vulnerabilities, n is usually 1)
+
+GRAPH_OUTPUT_DIR : Directory in which the program will print out the heap graphs generated for each path in the program
+
+GLOBAL:  <PATH_TO_SRC>/javascriptAnalysis/javascript_files/global.js
+
+TIME : -1 (No limit on time)
+       | n (time out after n seconds)
+
+OPTIMIZE: true (If we want to optimize for time by trading off space)
+	 | false (No optimization)
+
+IF_ORDERING: true (true branch explored first)
+	     | false (false branch explored first)
+
+WHILE_ORDERING: true (while body explored first)
+		| false (while body skipped)
+
+
+Executing the analyzer:
+
+java -Xmx16384m -Xss128m javascriptAnalysis/parser/ProgramAnalyzerC <FILENAME> <NUM_VUL> <GLOBAL> <GRAPH_OUTPUT_DIR> <TIME> <OPTIMIZE> <IF_ORDERING> <WHILE_ORDERING> > <OUTPUT_FILE> 2>&1
+
+
+An example:
+ java -Xmx16384m -Xss128m javascriptAnalysis/parser/ProgramAnalyzerC <FILENAME> 1  <GLOBAL> <GRAPH_OUTPUT_DIR> -1 true false false > <OUTPUT_FILE> 2>&1
