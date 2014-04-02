@@ -562,6 +562,8 @@ public class Heap{
 				if(lj.get("at_Taint") != null){
 					if(((SecurityType)lj.get("at_Taint")).isTainted()){
 						graphviz += l.getObjValue() + "[ fillcolor = \"red\", style = \"filled\"];";
+					}else{
+						graphviz += l.getObjValue() + "[ fillcolor = \"lightblue\", style = \"filled\"];";
 					}
 				}
 			}
@@ -572,7 +574,7 @@ public class Heap{
 				  if(ov instanceof Location){
 					  
 					  if(key.equals("innerHTML")){
-							graphviz += ov.getObjValue() + "[ fillcolor = \"blue\", style = \"filled\"];";
+							graphviz += ov.getObjValue() + "[ fillcolor = \"lightblue\", style = \"filled\"];";
 					  }
 					  
 					  JSObject jsov = heap.get(ov);
@@ -581,6 +583,8 @@ public class Heap{
 							  if(jsov.get("at_Taint") != null){
 								if(((SecurityType)jsov.get("at_Taint")).isTainted()){
 									graphviz += ov.getObjValue() + "[ fillcolor = \"red\", style = \"filled\"];";
+								}else{
+									graphviz += ov.getObjValue() + "[ fillcolor = \"lightblue\", style = \"filled\"];";
 								}
 							  }
 						  }
